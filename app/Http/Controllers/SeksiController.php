@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+namespace App\Http\Controllers; // Namespace diubah
 
 use App\Http\Controllers\Controller;
 use App\Models\Seksi;
@@ -14,7 +14,8 @@ class SeksiController extends Controller
     public function index()
     {
         $seksis = Seksi::latest()->paginate(10);
-        return view('admin.seksi.index', compact('seksis'));
+        // Path view tetap, karena file view-nya tetap di folder /admin/seksi
+        return view('backend.pages.seksi.index', compact('seksis'));
     }
 
     /**
@@ -22,7 +23,7 @@ class SeksiController extends Controller
      */
     public function create()
     {
-        return view('admin.seksi.create');
+        return view('backend.pages.seksi.create');
     }
 
     /**
@@ -37,7 +38,7 @@ class SeksiController extends Controller
 
         Seksi::create($validatedData);
 
-        return redirect()->route('admin.seksi.index')->with('success', 'Seksi baru berhasil ditambahkan.');
+        return redirect()->route('seksi.index')->with('success', 'Seksi baru berhasil ditambahkan.');
     }
 
     /**
@@ -45,9 +46,7 @@ class SeksiController extends Controller
      */
     public function show(Seksi $seksi)
     {
-        // Biasanya halaman show/detail tidak terlalu diperlukan di admin panel sederhana,
-        // seringkali langsung ke halaman edit. Tapi kita sediakan jika perlu.
-        return view('admin.seksi.show', compact('seksi'));
+        return view('backend.pages.seksi.show', compact('seksi'));
     }
 
     /**
@@ -55,7 +54,7 @@ class SeksiController extends Controller
      */
     public function edit(Seksi $seksi)
     {
-        return view('admin.seksi.edit', compact('seksi'));
+        return view('backend.pages.seksi.edit', compact('seksi'));
     }
 
     /**
@@ -70,7 +69,7 @@ class SeksiController extends Controller
 
         $seksi->update($validatedData);
 
-        return redirect()->route('admin.seksi.index')->with('success', 'Seksi berhasil diperbarui.');
+        return redirect()->route('seksi.index')->with('success', 'Seksi berhasil diperbarui.');
     }
 
     /**
@@ -79,6 +78,6 @@ class SeksiController extends Controller
     public function destroy(Seksi $seksi)
     {
         $seksi->delete();
-        return redirect()->route('admin.seksi.index')->with('success', 'Seksi berhasil dihapus.');
+        return redirect()->route('seksi.index')->with('success', 'Seksi berhasil dihapus.');
     }
 }

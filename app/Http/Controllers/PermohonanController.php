@@ -32,7 +32,7 @@ class PermohonanController extends Controller
         // Sekarang, query ini akan mengambil SEMUA permohonan
         $permohonans = $query->latest()->paginate(10);
 
-        return view('backend.permohonan.index', compact('permohonans'));
+        return view('backend.pages.permohonan.index', compact('permohonans'));
     }
 
     /**
@@ -43,7 +43,7 @@ class PermohonanController extends Controller
         // Eager load dokumen-dokumen yang terkait dengan permohonan ini
         $permohonan->load('dokumenPermohonans');
         
-        return view('backend.permohonan.show', compact('permohonan'));
+        return view('backend.pages.permohonan.show', compact('permohonan'));
     }
     
     /**
@@ -68,7 +68,7 @@ class PermohonanController extends Controller
         // TODO: Kirim notifikasi ke warga (Email/WhatsApp) mengenai perubahan status ini.
         // event(new PermohonanStatusDiubah($permohonan));
 
-        return redirect()->route('backend.permohonan.show', $permohonan)->with('success', 'Status permohonan berhasil diperbarui!');
+        return redirect()->route('backend.pages.permohonan.show', $permohonan)->with('success', 'Status permohonan berhasil diperbarui!');
     }
 
     /**
@@ -77,7 +77,7 @@ class PermohonanController extends Controller
     public function destroy(Permohonan $permohonan)
     {
         $permohonan->delete();
-        return redirect()->route('backend.permohonan.index')->with('success', 'Permohonan berhasil dihapus.');
+        return redirect()->route('backend.pages.permohonan.index')->with('success', 'Permohonan berhasil dihapus.');
     }
 
     // --- METHOD BARU DIMULAI DI SINI ---

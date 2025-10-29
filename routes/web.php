@@ -4,6 +4,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\LayananController;
 use App\Http\Controllers\PermohonanController;
+use App\Http\Controllers\SeksiController;
+
 // Impor Controller Admin Anda di sini
 
 
@@ -42,4 +44,6 @@ Route::post('/ajukan-permohonan', [PermohonanController::class, 'store'])->name(
 Route::get('/lacak-berkas', [PermohonanController::class, 'lacak'])->name('permohonan.lacak');
 
 Route::resource('layanan', LayananController::class);
+
+Route::resource('seksi', SeksiController::class);
 

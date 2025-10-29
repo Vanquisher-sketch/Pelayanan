@@ -50,7 +50,7 @@ class LayananController extends Controller
 
         // Catatan: Nama rute 'backend.pages.layanan.index' tetap dipertahankan
         // Anda hanya perlu mengubah definisi rute ini di routes/web.php
-        return redirect()->route('backend.pages.layanan.index')->with('success', 'Layanan baru berhasil ditambahkan.');
+        return redirect()->route('layanan.index')->with('success', 'Layanan baru berhasil ditambahkan.');
     }
 
     /**
@@ -87,7 +87,7 @@ class LayananController extends Controller
 
         $layanan->update($validatedData);
 
-        return redirect()->route('backend.pages.layanan.index')->with('success', 'Layanan berhasil diperbarui.');
+        return redirect()->route('layanan.index')->with('success', 'Layanan berhasil diperbarui.');
     }
 
     /**
@@ -96,6 +96,6 @@ class LayananController extends Controller
     public function destroy(Layanan $layanan)
     {
         $layanan->delete();
-        return redirect()->route('backend.pages.layanan.index')->with('success', 'Layanan berhasil dihapus.');
+        return redirect()->route('layanan.index')->with('success', 'Layanan berhasil dihapus.');
     }
 }
