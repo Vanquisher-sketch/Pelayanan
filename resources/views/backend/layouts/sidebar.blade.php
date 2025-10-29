@@ -23,7 +23,7 @@
     </div>
 
     <li class="nav-item">
-        <a class="nav-link" href="#">
+        <a class="nav-link" href="{{ route('permohonan.index')}}">
             <i class="fas fa-fw fa-folder"></i>
             <span>Permohonan Layanan</span>
         </a>
@@ -64,7 +64,7 @@
         </a>
         <div id="collapseDataMaster" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Manajemen Layanan</a>
+                <a class="collapse-item" href="{{ route('layanan.index')}}">Manajemen Layanan</a>
                 <a class="collapse-item" href="#">Manajemen Seksi</a>
                 <a class="collapse-item" href="#">Manajemen Pengguna</a>
             </div>

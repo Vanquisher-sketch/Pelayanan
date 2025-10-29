@@ -1,6 +1,7 @@
 <?php
 
-namespace App\Http\Controllers\Admin;
+// Namespace diubah ke root App\Http\Controllers
+namespace App\Http\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Layanan;
@@ -16,7 +17,10 @@ class LayananController extends Controller
     {
         // Ambil semua layanan, eager load relasi 'seksi' untuk tampilkan nama seksi di tabel
         $layanans = Layanan::with('seksi')->latest()->paginate(10);
-        return view('admin.layanan.index', compact('layanans'));
+        
+        // Catatan: Path view 'backend.pages.layanan.index' tetap dipertahankan
+        // karena view Anda kemungkinan masih ada di folder resources/views/admin/layanan
+        return view('backend.pages.layanan.index', compact('layanans'));
     }
 
     /**
@@ -26,7 +30,7 @@ class LayananController extends Controller
     {
         // Ambil semua data seksi untuk ditampilkan di form dropdown
         $seksis = Seksi::all();
-        return view('admin.layanan.create', compact('seksis'));
+        return view('backend.pages.layanan.create', compact('seksis'));
     }
 
     /**
@@ -44,7 +48,9 @@ class LayananController extends Controller
 
         Layanan::create($validatedData);
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Layanan baru berhasil ditambahkan.');
+        // Catatan: Nama rute 'backend.pages.layanan.index' tetap dipertahankan
+        // Anda hanya perlu mengubah definisi rute ini di routes/web.php
+        return redirect()->route('backend.pages.layanan.index')->with('success', 'Layanan baru berhasil ditambahkan.');
     }
 
     /**
@@ -54,7 +60,7 @@ class LayananController extends Controller
     {
          // Anda bisa arahkan ini ke view 'show' atau langsung ke 'edit'
          $seksis = Seksi::all(); // Diperlukan jika view show punya tombol 'edit'
-         return view('admin.layanan.show', compact('layanan', 'seksis'));
+         return view('backend.pages.layanan.show', compact('layanan', 'seksis'));
     }
 
     /**
@@ -63,7 +69,7 @@ class LayananController extends Controller
     public function edit(Layanan $layanan)
     {
         $seksis = Seksi::all();
-        return view('admin.layanan.edit', compact('layanan', 'seksis'));
+        return view('backend.pages.layanan.edit', compact('layanan', 'seksis'));
     }
 
     /**
@@ -81,7 +87,7 @@ class LayananController extends Controller
 
         $layanan->update($validatedData);
 
-        return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil diperbarui.');
+        return redirect()->route('backend.pages.layanan.index')->with('success', 'Layanan berhasil diperbarui.');
     }
 
     /**
@@ -90,6 +96,6 @@ class LayananController extends Controller
     public function destroy(Layanan $layanan)
     {
         $layanan->delete();
-        return redirect()->route('admin.layanan.index')->with('success', 'Layanan berhasil dihapus.');
+        return redirect()->route('backend.pages.layanan.index')->with('success', 'Layanan berhasil dihapus.');
     }
 }

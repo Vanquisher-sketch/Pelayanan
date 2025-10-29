@@ -17,6 +17,39 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
         <!-- Core theme CSS (includes Bootstrap)-->
         <link href="{{ asset('template/css/styles.css') }}" rel="stylesheet" />
+
+        <!-- CSS Kustom untuk pesan status -->
+        <style>
+            .status-box {
+                border-radius: 0.5rem;
+                padding: 1rem;
+                margin-top: 1rem;
+                text-align: left;
+            }
+            .status-success {
+                background-color: #d1e7dd;
+                color: #0f5132;
+                border: 1px solid #badbcc;
+            }
+            .status-error {
+                background-color: #f8d7da;
+                color: #842029;
+                border: 1px solid #f5c2c7;
+            }
+            .status-info {
+                background-color: #cff4fc;
+                color: #055160;
+                border: 1px solid #b6effb;
+            }
+            .status-info hr {
+                border-top: 1px solid #05516050;
+            }
+            .status-info strong {
+                display: block;
+                font-size: 1.1rem;
+                margin-bottom: 0.5rem;
+            }
+        </style>
     </head>
     <body id="page-top">
         <!-- Navigation-->
@@ -59,15 +92,40 @@
                         <h2 class="text-white mt-0">Sudah Mengajukan Permohonan?</h2>
                         <hr class="divider divider-light" />
                         <p class="text-white-75 mb-4">Masukkan nomor tiket yang Anda dapatkan saat pengajuan untuk melihat progres permohonan Anda secara real-time.</p>
+                        
                         <!-- Form Lacak Tiket -->
-                        <form class="row g-3 justify-content-center">
+                        <!-- UBAH ACTION DAN TAMBAHKAN METHOD GET -->
+                        <form class="row g-3 justify-content-center" method="GET" action="{{ route('permohonan.lacak') }}">
                             <div class="col-md-6">
-                                <input type="text" class="form-control form-control-lg" id="nomorTiket" placeholder="Masukkan Nomor Tiket Anda (cth: TWG-2025-001)">
+                                <input type="text" class="form-control form-control-lg" id="nomor_tiket" name="nomor_tiket" placeholder="Masukkan Nomor Tiket Anda (cth: TWG-2025-001)" required>
                             </div>
                             <div class="col-auto">
                                 <button type="submit" class="btn btn-light btn-xl">Lacak Berkas</button>
                             </div>
                         </form>
+
+                        <!-- TAMPILKAN HASIL PELACAKAN DI SINI -->
+                        @if (session('status_lacak'))
+                            @php $status = session('status_lacak'); @endphp
+                            <div class="status-box status-info text-dark">
+                                <strong>Status Permohonan: {{ $status->nomor_tiket }}</strong>
+                                <hr>
+                                <p class="mb-1"><strong>Pemohon:</strong> {{ $status->nama_pemohon }}</p>
+                                <p class="mb-1"><strong>Jenis:</strong> {{ $status->layanan->nama_layanan }}</p>
+                                <p class="mb-1"><strong>Status Saat Ini:</strong> 
+                                    <span class="badge bg-warning text-dark">{{ ucwords(str_replace('_', ' ', $status->status)) }}</span>
+                                </p>
+                                @if ($status->status == 'butuh_revisi')
+                                    <p class="mb-0 mt-2"><strong>Catatan Revisi:</strong><br>{{ $status->keterangan_revisi }}</p>
+                                @endif
+                            </div>
+                        @endif
+                        @if (session('status_error'))
+                            <div class="status-box status-error">
+                                {{ session('status_error') }}
+                            </div>
+                        @endif
+
                     </div>
                 </div>
             </div>
@@ -174,7 +232,7 @@
                 </div>
             </div>
         </div>
-        
+
         <!-- Form Pengajuan Layanan (Bagian 'Contact') -->
         <section class="page-section" id="ajukan-layanan">
             <div class="container px-4 px-lg-5">
@@ -185,52 +243,95 @@
                         <p class="text-muted mb-5">Silakan isi formulir di bawah ini dengan data yang benar. Pastikan Nomor WhatsApp Anda aktif untuk menerima notifikasi status permohonan.</p>
                     </div>
                 </div>
+
+                <!-- TAMPILKAN PESAN SUKSES/ERROR DARI FORM SUBMIT -->
+                <div class="row gx-4 gx-lg-5 justify-content-center mb-3">
+                    <div class="col-lg-6">
+                        @if (session('success'))
+                            <div class="status-box status-success">
+                                {{ session('success') }}
+                                @if (session('nomor_tiket'))
+                                    <hr>
+                                    Silakan simpan Nomor Tiket Anda untuk pelacakan:
+                                    <strong style="font-size: 1.2rem; display: block; margin-top: 0.5rem;">{{ session('nomor_tiket') }}</strong>
+                                @endif
+                            </div>
+                        @endif
+
+                        @if (session('error'))
+                            <div class="status-box status-error">
+                                {{ session('error') }}
+                            </div>
+                        @endif
+
+                        <!-- Tampilkan Validation Errors -->
+                        @if ($errors->any())
+                            <div class="status-box status-error">
+                                <strong>Gagal mengirim formulir:</strong>
+                                <ul class="mb-0 mt-2" style="padding-left: 1.2rem;">
+                                    @foreach ($errors->all() as $error)
+                                        <li>{{ $error }}</li>
+                                    @endforeach
+                                </ul>
+                            </div>
+                        @endif
+                    </div>
+                </div>
+
                 <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
                     <div class="col-lg-6">
-                        <!-- Ini adalah form utama Anda yang akan dihubungkan ke Controller -->
-                        <form id="contactForm" method="POST" action="#">
+                        <!-- 
+                          UBAH FORM:
+                          1. method="POST"
+                          2. action="{{ route('permohonan.store') }}"
+                          3. enctype="multipart/form-data" (WAJIB UNTUK UPLOAD FILE)
+                        -->
+                        <form id="contactForm" method="POST" action="{{ route('permohonan.store') }}" enctype="multipart/form-data">
                             @csrf
-                            <!-- Pilihan Layanan (Dropdown) -->
+                            <!-- Pilihan Layanan (Dropdown) - DIBUAT DINAMIS -->
                             <div class="form-floating mb-3">
                                 <select class="form-select" id="layanan_id" name="layanan_id" required>
                                     <option value="" disabled selected>-- Pilih Jenis Layanan --</option>
-                                    <option value="1">Izin Keramaian</option>
-                                    <option value="2">Pengantar SKTM</option>
-                                    <option value="3">Rekomendasi IMB</option>
-                                    <option value="4">Layanan Lainnya</option>
+                                    {{-- Loop data $layanans yang dikirim dari FrontendController --}}
+                                    @foreach($layanans as $layanan)
+                                        <option value="{{ $layanan->id }}" {{ old('layanan_id') == $layanan->id ? 'selected' : '' }}>
+                                            {{ $layanan->nama_layanan }}
+                                        </option>
+                                    @endforeach
                                 </select>
                                 <label for="layanan_id">Jenis Layanan</label>
                             </div>
 
                             <!-- Nama Lengkap input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="nama_pemohon" name="nama_pemohon" type="text" placeholder="Masukkan nama lengkap Anda..." required />
+                                <input class="form-control" id="nama_pemohon" name="nama_pemohon" type="text" placeholder="Masukkan nama lengkap Anda..." value="{{ old('nama_pemohon') }}" required />
                                 <label for="nama_pemohon">Nama Lengkap Pemohon</label>
                             </div>
 
                             <!-- NIK input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="nik_pemohon" name="nik_pemohon" type="text" placeholder="3206..." required />
+                                <input class="form-control" id="nik_pemohon" name="nik_pemohon" type="text" placeholder="3206..." value="{{ old('nik_pemohon') }}" required />
                                 <label for="nik_pemohon">Nomor Induk Kependudukan (NIK)</label>
                             </div>
 
                             <!-- Phone number input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="wa_pemohon" name="wa_pemohon" type="tel" placeholder="0812..." required />
+                                <input class="form-control" id="wa_pemohon" name="wa_pemohon" type="tel" placeholder="0812..." value="{{ old('wa_pemohon') }}" required />
                                 <label for="wa_pemohon">Nomor WhatsApp Aktif</label>
                             </div>
                             
                             <!-- Email address input-->
                             <div class="form-floating mb-3">
-                                <input class="form-control" id="email_pemohon" name="email_pemohon" type="email" placeholder="nama@email.com" />
+                                <input class="form-control" id="email_pemohon" name="email_pemohon" type="email" placeholder="nama@email.com" value="{{ old('email_pemohon') }}" />
                                 <label for="email_pemohon">Alamat Email (Opsional)</label>
                             </div>
 
                             <!-- Upload Berkas input-->
                             <div class="mb-3">
                                 <label for="berkas" class="form-label">Upload Berkas Persyaratan</label>
+                                <!-- UBAH NAMA MENJADI 'berkas[]' untuk multiple file -->
                                 <input class="form-control" id="berkas" name="berkas[]" type="file" multiple required>
-                                <div class="form-text">Anda bisa memilih lebih dari satu file (KTP, KK, Pengantar RT/RW, dll).</div>
+                                <div class="form-text">Anda bisa memilih lebih dari satu file (KTP, KK, Pengantar RT/RW, dll). Tipe file: PDF, JPG, PNG. Max 2MB per file.</div>
                             </div>
                             
                             <!-- Submit Button-->
@@ -260,3 +361,4 @@
         <script src="{{ asset('template/js/scripts.js') }}"></script>
     </body>
 </html>
+
