@@ -1,10 +1,14 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\FrontendController;
-use App\Http\Controllers\LayananController;
-use App\Http\Controllers\PermohonanController;
 use App\Http\Controllers\SeksiController;
+use App\Http\Controllers\BannerController;
+use App\Http\Controllers\GaleriController;
+use App\Http\Controllers\LayananController;
+use App\Http\Controllers\FrontendController;
+use App\Http\Controllers\PengumumanController;
+use App\Http\Controllers\PermohonanController;
+
 
 // Impor Controller Admin Anda di sini
 
@@ -47,3 +51,8 @@ Route::resource('layanan', LayananController::class);
 
 Route::resource('seksi', SeksiController::class);
 
+Route::resource('pengumuman', PengumumanController::class);
+Route::resource('banner', BannerController::class);
+Route::resource('galeri', GaleriController::class)->only([
+        'index', 'create', 'store', 'destroy'
+    ]);

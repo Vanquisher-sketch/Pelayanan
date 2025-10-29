@@ -43,9 +43,9 @@
         </a>
         <div id="collapseKonten" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-                <a class="collapse-item" href="#">Manajemen Pengumuman</a>
-                <a class="collapse-item" href="#">Manajemen Galeri</a>
-                <a class="collapse-item" href="#">Manajemen Banner</a>
+                <a class="collapse-item" href="{{ route('pengumuman.index')}}">Manajemen Pengumuman</a>
+                <a class="collapse-item" href="{{ route('galeri.index')}}">Manajemen Galeri</a>
+                <a class="collapse-item" href="{{ route('banner.index')}}">Manajemen Banner</a>
             </div>
         </div>
     </li>

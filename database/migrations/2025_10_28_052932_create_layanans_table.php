@@ -21,6 +21,9 @@ return new class extends Migration
             $table->string('nama_layanan');
             $table->text('deskripsi')->nullable();
             
+            // ✅ REVISI: Menambahkan kolom 'status' untuk mengontrol visibilitas layanan
+            $table->string('status', 20)->default('aktif');
+            
             // Menyimpan daftar persyaratan dalam format JSON
             // Contoh: ["Scan KTP", "Scan KK", "Surat Pengantar RT/RW"]
             $table->json('persyaratan')->nullable();
@@ -38,4 +41,3 @@ return new class extends Migration
         Schema::dropIfExists('layanans');
     }
 };
-
