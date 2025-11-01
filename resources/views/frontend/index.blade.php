@@ -13,6 +13,8 @@
         <link href="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.css" rel="stylesheet" />
         <link href="{{ asset('template/css/styles.css') }}" rel="stylesheet" />
 
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.carousel.min.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/assets/owl.theme.default.min.css" />
         <style>
             .status-box {
                 border-radius: 0.5rem;
@@ -20,38 +22,82 @@
                 margin-top: 1rem;
                 text-align: left;
             }
-            .status-success {
-                background-color: #d1e7dd;
-                color: #0f5132;
-                border: 1px solid #badbcc;
-            }
-            .status-error {
-                background-color: #f8d7da;
-                color: #842029;
-                border: 1px solid #f5c2c7;
-            }
-            .status-info {
-                background-color: #cff4fc;
-                color: #055160;
-                border: 1px solid #b6effb;
-            }
-            .status-info hr {
-                border-top: 1px solid #05516050;
-            }
-            .status-info strong {
-                display: block;
-                font-size: 1.1rem;
-                margin-bottom: 0.5rem;
-            }
+            /* ... (CSS status box lainnya tetap sama) ... */
+            .status-success { background-color: #d1e7dd; color: #0f5132; border: 1px solid #badbcc; }
+            .status-error { background-color: #f8d7da; color: #842029; border: 1px solid #f5c2c7; }
+            .status-info { background-color: #cff4fc; color: #055160; border: 1px solid #b6effb; }
+            .status-info hr { border-top: 1px solid #05516050; }
+            .status-info strong { display: block; font-size: 1.1rem; margin-bottom: 0.5rem; }
+
             .portfolio-box img {
                 width: 100%;
-                height: 300px; /* Menyamakan tinggi gambar */
-                object-fit: cover; /* Memastikan gambar terpotong rapi, tidak gepeng */
+                height: 300px;
+                object-fit: cover;
             }
+
+            .service-poster-link {
+                display: block;
+                border-radius: 0.55rem;
+                overflow: hidden;
+                transition: all 0.3s ease;
+                /* Hapus shadow di sini, akan kita pindah ke .owl-item */
+            }
+            .service-poster-link img {
+                transition: all 0.3s ease;
+            }
+            .service-poster-link:hover {
+                transform: none; /* Efek hover kini diatur di .owl-item */
+                box-shadow: none;
+            }
+            .service-poster-link:hover img {
+                transform: scale(1.03);
+            }
+
+            /* */
+            /* */
+            /* */
+            #jenis-layanan .owl-item {
+                /* Memberi efek shadow dan hover pada item carousel */
+                transition: all 0.3s ease;
+                border-radius: 0.55rem;
+            }
+            #jenis-layanan .owl-item:hover {
+                transform: translateY(-5px);
+                box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15) !important;
+            }
+            /* Styling untuk panah navigasi */
+            #jenis-layanan .owl-nav {
+                margin-top: 1rem;
+                text-align: center;
+            }
+            #jenis-layanan .owl-nav button {
+                font-size: 2.5rem !important;
+                margin: 0 10px !important;
+                color: #f4623a !important; /* Warna primary template */
+                opacity: 0.5;
+                transition: opacity 0.3s ease;
+            }
+            #jenis-layanan .owl-nav button:hover {
+                opacity: 1;
+                background: none !important;
+            }
+            /* Styling untuk dots navigasi */
+            #jenis-layanan .owl-dots {
+                margin-top: 1rem;
+            }
+            #jenis-layanan .owl-dots .owl-dot span {
+                background: #ccc !important;
+            }
+            #jenis-layanan .owl-dots .owl-dot.active span {
+                background: #f4623a !important; /* Warna primary template */
+            }
+            /* */
+
         </style>
     </head>
     <body id="page-top">
         <nav class="navbar navbar-expand-lg navbar-light fixed-top py-3" id="mainNav">
+            {{-- ... (Isi Navbar tidak berubah) ... --}}
             <div class="container px-4 px-lg-5">
                 <a class="navbar-brand" href="#page-top">Kecamatan Tawang</a>
                 <button class="navbar-toggler navbar-toggler-right" type="button" data-bs-toggle="collapse" data-bs-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
@@ -59,6 +105,7 @@
                     <ul class="navbar-nav ms-auto my-2 my-lg-0">
                         <li class="nav-item"><a class="nav-link" href="#page-top">Beranda</a></li>
                         <li class="nav-item"><a class="nav-link" href="#alur-layanan">Alur Layanan</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#jenis-layanan">Jenis Layanan</a></li> 
                         <li class="nav-item"><a class="nav-link" href="#pengumuman">Pengumuman</a></li>
                         <li class="nav-item"><a class="nav-link" href="#lacak-layanan">Lacak Berkas</a></li>
                         <li class="nav-item"><a class="nav-link" href="#ajukan-layanan">Ajukan Layanan</a></li>
@@ -67,6 +114,7 @@
             </div>
         </nav>
         <header class="masthead">
+            {{-- ... (Isi Header tidak berubah) ... --}}
             <div class="container px-4 px-lg-5 h-100">
                 <div class="row gx-4 gx-lg-5 h-100 align-items-center justify-content-center text-center">
                     <div class="col-lg-8 align-self-end">
@@ -82,13 +130,13 @@
         </header>
         
         <section class="page-section bg-primary" id="lacak-layanan">
+            {{-- ... (Isi Lacak Layanan tidak berubah) ... --}}
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8 text-center">
                         <h2 class="text-white mt-0">Sudah Mengajukan Permohonan?</h2>
                         <hr class="divider divider-light" />
                         <p class="text-white-75 mb-4">Masukkan nomor tiket yang Anda dapatkan saat pengajuan untuk melihat progres permohonan Anda secara real-time.</p>
-                        
                         <form class="row g-3 justify-content-center" method="GET" action="{{ route('permohonan.lacak') }}">
                             <div class="col-md-6">
                                 <input type="text" class="form-control form-control-lg" id="nomor_tiket" name="nomor_tiket" placeholder="Masukkan Nomor Tiket Anda (cth: TWG-2025-001)" required>
@@ -97,7 +145,6 @@
                                 <button type="submit" class="btn btn-light btn-xl">Lacak Berkas</button>
                             </div>
                         </form>
-
                         @if (session('status_lacak'))
                             @php $status = session('status_lacak'); @endphp
                             <div class="status-box status-info text-dark">
@@ -118,13 +165,13 @@
                                 {{ session('status_error') }}
                             </div>
                         @endif
-
                     </div>
                 </div>
             </div>
         </section>
 
         <section class="page-section" id="alur-layanan">
+            {{-- ... (Isi Alur Layanan tidak berubah) ... --}}
             <div class="container px-4 px-lg-5">
                 <h2 class="text-center mt-0">Alur Pelayanan Kami</h2>
                 <hr class="divider" />
@@ -160,16 +207,57 @@
                 </div>
             </div>
         </section>
-        
+
+        <section class="page-section bg-light" id="jenis-layanan">
+            <div class="container px-4 px-lg-5">
+                <h2 class="text-center mt-0">Jenis Pelayanan Kami</h2>
+                <hr class="divider" />
+                <p class="text-center text-muted mb-5">Klik pada poster layanan untuk langsung mengisi formulir pengajuan di bawah.</p>
+                
+                <div class="owl-carousel owl-theme">
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('1')">
+                        <img class="img-fluid" src="{{ asset('images/posters/dispensasi.jpeg') }}" alt="Poster Layanan Dispensasi Nikah" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('2')">
+                        <img class="img-fluid" src="{{ asset('images/posters/ahmadiyah.jpeg') }}" alt="Poster Layanan Ahmadiyah" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('3')">
+                        <img class="img-fluid" src="{{ asset('images/posters/proposal.png') }}" alt="Poster Layanan Proposal" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('4')"> <img class="img-fluid" src="{{ asset('images/posters/keramaian.png') }}" alt="Poster Layanan Izin Keramaian" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('5')"> <img class="img-fluid" src="{{ asset('images/posters/tni.png') }}" alt="Poster Layanan Pendaftaran TNI" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('6')"> <img class="img-fluid" src="{{ asset('images/posters/ahliwaris.png') }}" alt="Poster Layanan Ahli Waris" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('7')"> <img class="img-fluid" src="{{ asset('images/posters/sk.png') }}" alt="Poster Layanan SK" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('8')"> <img class="img-fluid" src="{{ asset('images/posters/bank.png') }}" alt="Poster Layanan Rekomendasi Bank" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('9')"> <img class="img-fluid" src="{{ asset('images/posters/domisili.png') }}" alt="Poster Layanan Domisili" />
+                    </a>
+
+                    <a class="service-poster-link" href="#ajukan-layanan" onclick="selectLayanan('10')"> <img class="img-fluid" src="{{ asset('images/posters/izin.png') }}" alt="Poster Layanan Perizinan" />
+                    </a>
+
+                </div>
+            </div>
+        </section>
         <div id="pengumuman">
+            {{-- ... (Isi Pengumuman tidak berubah) ... --}}
             <div class="container-fluid p-0">
                 <div class="row g-0">
-
-                    {{-- Mulai looping data dari controller --}}
                     @forelse ($items as $item)
                         <div class="col-lg-4 col-sm-6">
-                            
-                            {{-- Logika untuk menentukan judul dan path gambar berdasarkan tipe item --}}
                             @php
                                 if ($item->type == 'Pengumuman') {
                                     $imageUrl = $item->gambar ? asset('storage/pengumuman/' . $item->gambar) : 'https://via.placeholder.com/600x400.png?text=No+Image';
@@ -179,7 +267,6 @@
                                     $title = $item->judul_foto;
                                 }
                             @endphp
-
                             <a class="portfolio-box" href="{{ $imageUrl }}" title="{{ $title }}">
                                 <img class="img-fluid" src="{{ $imageUrl }}" alt="{{ $title }}" />
                                 <div class="portfolio-box-caption">
@@ -193,13 +280,12 @@
                             <p class="text-muted fs-5">Belum ada pengumuman atau galeri yang dipublikasikan.</p>
                         </div>
                     @endforelse
-                    {{-- Selesai looping --}}
-
                 </div>
             </div>
         </div>
 
         <section class="page-section" id="ajukan-layanan">
+            {{-- ... (Isi Form Ajukan Layanan tidak berubah) ... --}}
             <div class="container px-4 px-lg-5">
                 <div class="row gx-4 gx-lg-5 justify-content-center">
                     <div class="col-lg-8 col-xl-6 text-center">
@@ -208,7 +294,6 @@
                         <p class="text-muted mb-5">Silakan isi formulir di bawah ini dengan data yang benar. Pastikan Nomor WhatsApp Anda aktif untuk menerima notifikasi status permohonan.</p>
                     </div>
                 </div>
-
                 <div class="row gx-4 gx-lg-5 justify-content-center mb-3">
                     <div class="col-lg-6">
                         @if (session('success'))
@@ -238,7 +323,6 @@
                         @endif
                     </div>
                 </div>
-
                 <div class="row gx-4 gx-lg-5 justify-content-center mb-5">
                     <div class="col-lg-6">
                         <form id="contactForm" method="POST" action="{{ route('permohonan.store') }}" enctype="multipart/form-data">
@@ -295,5 +379,39 @@
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
         <script src="https://cdnjs.cloudflare.com/ajax/libs/SimpleLightbox/2.1.0/simpleLightbox.min.js"></script>
         <script src="{{ asset('template/js/scripts.js') }}"></script>
-    </body>
+
+        <script>
+            function selectLayanan(layananId) {
+                var selectElement = document.getElementById('layanan_id');
+                selectElement.value = layananId;
+            }
+        </script>
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+
+        <script>
+            // Menunggu dokumen siap (termasuk jQuery)
+            $(document).ready(function(){
+                // Cari carousel di dalam section #jenis-layanan
+                $("#jenis-layanan .owl-carousel").owlCarousel({
+                    loop: false,       // 'false' agar tidak berputar jika item sedikit
+                    margin: 20,        // Jarak antar poster (dalam pixel)
+                    nav: true,         // Tampilkan panah Kiri/Kanan
+                    dots: true,        // Tampilkan titik-titik navigasi
+                    responsive:{       // Pengaturan untuk layar beda ukuran
+                        0:{
+                            items: 1   // 1 poster tampil di layar HP
+                        },
+                        768:{
+                            items: 2   // 2 poster tampil di layar tablet
+                        },
+                        992:{
+                            items: 3   // 3 poster tampil di layar desktop
+                        }
+                    }
+                });
+            });
+        </script>
+        </body>
 </html>
